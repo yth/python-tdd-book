@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
 import unittest
 
 class NewVisitorTest(unittest.TestCase) :
@@ -13,16 +15,32 @@ class NewVisitorTest(unittest.TestCase) :
         self.browser.get("http://localhost:8000")
 
         # The very top of the website browser the title of the new app is:
+        # To-Do
         self.assertIn("To-Do", self.browser.title)
-        self.fail("Finish the test")
 
-        # The user is allowed to enter a to-do item straight away
+        # The header also mentioned that the name of the app is: To-Do
+        header_text = self.browser.find_element_by_tag_name("h1").text
+        self.assertIN("To-Do", header_text)
+
+        # The user is invited to enter a to-do item straight away
+        inputbox = self.browser.find_element_by_id("id_new_item")
+        self.assertEqual(inputbox.get_attribute("placeholder"), 
+                        "Enter a to-do item")
 
         # The user can enter something like "Buy milk"
+        inputbox.send_keys("Buy milk")
 
         # After the user hit enter, the item appears on their todo list
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+
+        table = self.browser.find_element_by_id("id_list_table")
+        rows = table.find_elements_by_tag_name("tr")
+        self.assertTrue(any(row.text == "1: Buy milk" for row in rows))
 
         # The user is again invited to add more items to their todo list
+
+        self.fail("Finish the test!")
 
         # The user enters "Buy bread" and hits <enter>
 
