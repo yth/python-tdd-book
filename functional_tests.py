@@ -20,7 +20,7 @@ class NewVisitorTest(unittest.TestCase) :
 
         # The header also mentioned that the name of the app is: To-Do
         header_text = self.browser.find_element_by_tag_name("h1").text
-        self.assertIN("To-Do", header_text)
+        self.assertIn("To-Do", header_text)
 
         # The user is invited to enter a to-do item straight away
         inputbox = self.browser.find_element_by_id("id_new_item")
@@ -36,7 +36,8 @@ class NewVisitorTest(unittest.TestCase) :
 
         table = self.browser.find_element_by_id("id_list_table")
         rows = table.find_elements_by_tag_name("tr")
-        self.assertTrue(any(row.text == "1: Buy milk" for row in rows))
+        self.assertTrue(any(row.text == "1: Buy milk" for row in rows),
+                        "New to-do item did not appear in table")
 
         # The user is again invited to add more items to their todo list
 
